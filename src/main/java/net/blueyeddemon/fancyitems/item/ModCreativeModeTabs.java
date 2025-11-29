@@ -1,0 +1,35 @@
+package net.blueyeddemon.fancyitems.item;
+
+import net.blueyeddemon.fancyitems.FancyItems;
+import net.blueyeddemon.fancyitems.block.ModBlocks;
+import net.blueyeddemon.fancyitems.item.ModItems;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
+
+public class ModCreativeModeTabs {
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FancyItems.MOD_ID);
+
+    public static final Supplier<CreativeModeTab> GLOWEM_TAB = CREATIVE_MODE_TAB.register("glowem_tab",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.GLOWEM_BLOCK.get()))
+                    .title(Component.translatable("creativetab.fancyitems.glowem_items"))
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(ModItems.GLOWEM);
+                        output.accept(ModItems.RAW_GLOWEM);
+                        output.accept(ModBlocks.GLOWEM_ORE.get().asItem());
+                        output.accept(ModBlocks.GLOWEM_DEEPSLATE_ORE.get().asItem());
+                        output.accept(ModBlocks.GLOWEM_BLOCK.get().asItem());
+                    }).build());
+
+
+    public static void register(IEventBus eventBus) {
+        CREATIVE_MODE_TAB.register(eventBus);
+    }
+}

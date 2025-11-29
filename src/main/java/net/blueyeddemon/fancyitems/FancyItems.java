@@ -1,5 +1,9 @@
 package net.blueyeddemon.fancyitems;
 
+import net.blueyeddemon.fancyitems.block.ModBlocks;
+import net.blueyeddemon.fancyitems.item.ModCreativeModeTabs;
+import net.blueyeddemon.fancyitems.item.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -36,6 +40,11 @@ public class FancyItems {
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
+        ModCreativeModeTabs.register(modEventBus);
+
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
@@ -49,7 +58,16 @@ public class FancyItems {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.GLOWEM);
+            event.accept(ModItems.RAW_GLOWEM);
+        }
 
+        if(event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(ModBlocks.GLOWEM_ORE);
+            event.accept(ModBlocks.GLOWEM_DEEPSLATE_ORE);
+            event.accept(ModBlocks.GLOWEM_BLOCK);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
